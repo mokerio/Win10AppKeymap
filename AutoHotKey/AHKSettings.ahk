@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -245,6 +245,10 @@ return
 CapsLock & s::Send, ^+!#s
 return
 
+; 暂停/启动 Wgestures CapsLock + q 也即：Ctrl + Shift + Alt + Win + q
+CapsLock & q::Send, ^+!#q
+return
+
 ; 常用网站
 ; Google  CapsLock + g
 CapsLock & g::run, https://www.google.com/ncr
@@ -306,6 +310,23 @@ ifWinActive, .*Code
 }
 return
 
+CapsLock & r::
+SetTitleMatchMode, RegEx
+ifWinActive, .*IDEA
+{
+    ; Alt + Shift + d后， IDEA会默认选择向上一次启动的项目
+    Send, !+d
+    Sleep, 120
+    Send, {Right}
+    Sleep, 120
+    Loop, 3 {
+        Send, {Up}
+        Sleep, 120
+    }
+    Send, {Enter}
+}
+return
+
 CapsLock & p::
 SetTitleMatchMode, RegEx
 ifWinActive, .*IDEA
@@ -327,7 +348,7 @@ return
 ; TEST
 CapsLock & u::
 SetTitleMatchMode, RegEx
-ifWinActive, .*Code
+ifWinActive, .*IDEA
 {
     WinGetTitle, Title, A
     MsgBox, The active window is "%Title%".
